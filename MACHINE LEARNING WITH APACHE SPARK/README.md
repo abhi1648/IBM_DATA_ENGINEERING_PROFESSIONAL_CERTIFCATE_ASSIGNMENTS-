@@ -1,6 +1,3 @@
-# README Generator Script
-
-readme_content = """
 # IBM Data Engineering Professional Certificate Final Project
 ## Build an ML Pipeline for Airfoil Noise Prediction
 
@@ -18,9 +15,9 @@ As a data engineer at an aeronautics consulting company, your role is crucial in
 2. **Machine Learning Pipeline (Part 2):**
    - Load the cleaned data
    - Convert string columns to numeric types
-   - Create a machine learning pipeline with VectorAssembler, StandardScaler, and LinearRegression stages
-   - Split the data into training and testing sets
-   - Fit the pipeline with the training data
+   - Define the VectorAssembler and StandardScaler stages
+   - Create a LinearRegression stage
+   - Build the pipeline, split the data, and fit the pipeline
 
 3. **Evaluate the Model (Part 3):**
    - Predict using the model
@@ -41,3 +38,84 @@ As a data engineer at an aeronautics consulting company, your role is crucial in
   ```python
   !pip install pyspark==3.1.2 -q
   !pip install findspark -q
+Instructions
+Part 1 - Perform ETL Activity:
+
+Import required libraries
+Create a Spark session
+Load the CSV file into a DataFrame
+Print top 5 rows and total number of rows
+Drop duplicates and null values
+Rename the "SoundLevel" column and save the cleaned DataFrame in Parquet format
+Part 2 - Create a Machine Learning Pipeline:
+
+Load the cleaned data
+Convert string columns to numeric types
+Define the VectorAssembler and StandardScaler stages
+Create a LinearRegression stage
+Build the pipeline, split the data, and fit the pipeline
+Part 3 - Evaluate the Model:
+
+Predict using the model
+Print MSE, MAE, and R2
+Part 4 - Persist the Model:
+
+Save the model to "Final_Project"
+Load the model, make predictions, and display results
+Evaluation
+Run the provided code cells in each part
+Answer the final evaluation quiz based on the results
+Authors
+Ramesh Sannareddy
+Contributors
+[List of contributors, if any]
+Change Log
+[Record changes and updates made to the project]
+"""
+Write the content to a README file
+with open("README.md", "w") as readme_file:
+readme_file.write(readme_content)
+
+Part 1 - Perform ETL Activity
+import findspark
+findspark.init()
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+
+Create a Spark session
+spark = SparkSession.builder.appName("AirfoilSelfNoisePrediction").getOrCreate()
+
+Load the CSV file into a DataFrame
+df = spark.read.csv("NASA_airfoil_noise_raw.csv", header=True)
+
+Print top 5 rows
+df.show(5)
+
+Print total number of rows
+rowcount1 = df.count()
+print(rowcount1)
+
+Drop duplicates
+df = df.dropDuplicates()
+
+Print total number of rows after dropping duplicates
+rowcount2 = df.count()
+print("Total number of rows after dropping duplicates:", rowcount2)
+
+Drop rows with null values
+df = df.dropna()
+
+Print total number of rows after dropping rows with null values
+rowcount3 = df.count()
+print("Total number of rows after dropping rows with null values:", rowcount3)
+
+Rename the column "SoundLevel" to "SoundLevelDecibels"
+df = df.withColumnRenamed("SoundLevel", "SoundLevelDecibels")
+
+Save the dataframe in parquet format
+df.write.parquet("NASA_airfoil_noise_cleaned.parquet")
+
+### Author
+Abhishek Kumar Singh
+
